@@ -2,9 +2,9 @@
 {
     public class Data
     {
-        public int[]? Barns { get; set; }
+        public List<int>? Barns { get; set; }
         public Section[]? Sections { get; set; }
         public Cow[]? Cows { get; set; }
-        public string[]? Groups { get; set; }
+        public List<string>? Groups { get; set; }
     }
 }

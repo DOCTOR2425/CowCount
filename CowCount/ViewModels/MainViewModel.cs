@@ -1,5 +1,8 @@
-﻿using CowCount.Models;
+﻿using CowCount.Commands;
+using CowCount.Models;
 using CowCount.Services.Interfaces;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace CowCount.ViewModels
 {
@@ -8,10 +11,10 @@ namespace CowCount.ViewModels
         private readonly CancellationTokenSource _mainCancellationTokenSource = new();
         private readonly ISavedDataService _savedDataService;
 
-        private int[]? _barns;
-        private Section[]? _sections;
-        private Cow[]? _cows;
-        private string[]? _groups;
+        private List<int>? _barns;
+        private List<Section>? _sections;
+        private List<Cow>? _cows;
+        private List<string>? _groups;
 
         private Data _data;
 
@@ -22,12 +25,17 @@ namespace CowCount.ViewModels
             BarnsListViewModel = barnsListViewModel;
             SectionListViewModel = sectionsListViewModel;
             _savedDataService = savedDataService;
+
+            BarnSelectionChangedCommand = new RelayCommand(BarnSelectionChangedCommandExecute);
+            SectionSelectionChangedCommand = new RelayCommand(SectionSelectionChangedCommandExecute);
         }
 
         public BarnsListViewModel BarnsListViewModel { get; }
         public SectionListViewModel SectionListViewModel { get; }
+        public ICommand BarnSelectionChangedCommand { get; set; }
+        public ICommand SectionSelectionChangedCommand { get; set; }
 
-        public int[]? Barns
+        public List<int>? Barns
         {
             get => _barns;
             set
@@ -98,6 +106,16 @@ namespace CowCount.ViewModels
             catch (Exception exception)
             {
             }
+        }
+
+        private void BarnSelectionChangedCommandExecute(object? obj)
+        {
+
+        }
+
+        private void SectionSelectionChangedCommandExecute(object? obj)
+        {
+
         }
 
         public void Dispose()
