@@ -14,17 +14,11 @@
                 <ColumnDefinition MinWidth="100" MaxWidth="150" Width="0.3*" />
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0"
-                    BorderThickness="1"
-                    BorderBrush="Black">
-                <ContentControl Content="{Binding BarnsListViewModel}" />
-            </Border>
+            <ContentControl Grid.Column="0"
+                            Content="{Binding BarnsListViewModel}" />
 
-            <Border Grid.Column="1"
-                    BorderThickness="1"
-                    BorderBrush="Black">
-                <ContentControl Content="{Binding SectionListViewModel}" />
-            </Border>
+            <ContentControl Grid.Column="1"
+                            Content="{Binding SectionListViewModel}" />
         </Grid>
     </DataTemplate>
 </ResourceDictionary>

@@ -1,7 +1,6 @@
 ﻿using CowCount.Commands;
 using CowCount.Models;
 using CowCount.Services.Interfaces;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace CowCount.ViewModels
@@ -50,7 +49,7 @@ namespace CowCount.ViewModels
             }
         }
 
-        public Section[]? Sections
+        public List<Section>? Sections
         {
             get => _sections;
             set
@@ -65,7 +64,7 @@ namespace CowCount.ViewModels
             }
         }
 
-        public Cow[]? Cows
+        public List<Cow>? Cows
         {
             get => _cows;
             set
@@ -80,7 +79,7 @@ namespace CowCount.ViewModels
             }
         }
 
-        public string[]? Groups
+        public List<string>? Groups
         {
             get => _groups;
             set
@@ -99,9 +98,8 @@ namespace CowCount.ViewModels
         {
             try
             {
-                var cancellationToken = _mainCancellationTokenSource.Token;
-                
-                await BarnsListViewModel.InitializeAsync(cancellationToken);
+                _data = await _savedDataService.GetDataAsync(_mainCancellationTokenSource.Token);
+                BarnsListViewModel.SetBarns(_data.Barns);
             }
             catch (Exception exception)
             {
@@ -110,12 +108,34 @@ namespace CowCount.ViewModels
 
         private void BarnSelectionChangedCommandExecute(object? obj)
         {
+            if (obj is int selectedBarn &&
+                _data is not null)
+            {
+                if (_data.Sections is null)
+                {
+                    SectionListViewModel.SetSections(null);
+                    return;
+                }
 
+                var sections = _data.Sections.Where(s => s.BarnNumber == selectedBarn).ToList();
+                SectionListViewModel.SetSections(sections);
+            }
         }
 
         private void SectionSelectionChangedCommandExecute(object? obj)
         {
+            if (obj is Section selectedSection &&
+                _data is not null)
+            {
+                if (_data.Cows is null)
+                {
 
+                    return;
+                }
+
+                //var cows = _data.Sections.Where(s => s.BarnNumber == selectedBarn).ToList();
+                //SectionListViewModel.SetSectionsAsync(cows);
+            }
         }
 
         public void Dispose()

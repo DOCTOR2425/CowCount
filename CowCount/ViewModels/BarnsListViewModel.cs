@@ -5,17 +5,10 @@ namespace CowCount.ViewModels
 {
     public class BarnsListViewModel : ViewModelBase
     {
-        private readonly ISavedDataService _savedDataService;
-        private int[]? _barns;
+        private List<int>? _barns;
         private int? _selectedBarn;
-        private Data _data;
 
-        public BarnsListViewModel(ISavedDataService savedDataService)
-        {
-            _savedDataService = savedDataService;
-        }
-
-        public int[]? Barns
+        public List<int>? Barns
         {
             get => _barns;
             set
@@ -45,20 +38,9 @@ namespace CowCount.ViewModels
             }
         }
 
-        public async Task InitializeAsync(CancellationToken cancellationToken)
+        public void SetBarns(List<int>? barns)
         {
-            try
-            {
-                _data = await _savedDataService.GetDataAsync(cancellationToken);
-
-                if (_data.Barns is not null)
-                {
-                    Barns = _data.Barns;
-                }
-            }
-            catch (Exception exception)
-            {
-            }
+            Barns = barns;
         }
     }
 }

@@ -2,34 +2,58 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                     xmlns:viewModels="clr-namespace:CowCount.ViewModels">
+    <DataTemplate x:Key="SectionItemTemplate" DataType="{x:Type viewModels:SectionViewModel}">
+        <StackPanel>
+            <Label Content="{Binding Number}"
+                   Padding="0"/>
+            <Label Content="{Binding Group}"
+                   Padding="0"
+                   Foreground="DarkGray"/>
+        </StackPanel>
+    </DataTemplate>
+
     <DataTemplate DataType="{x:Type viewModels:SectionListViewModel}">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+        <Border BorderThickness="1"
+                BorderBrush="Black">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-            <Label Grid.Row="0"
-               Content="Секции"/>
+                <Label Grid.Row="0"
+                       Content="Секции"/>
 
-            <Button Grid.Row="1"
-                Content="Добавить секцию в коровник"/>
+                <Button Grid.Row="1"
+                        Content="Добавить секцию в коровник"/>
 
-            <ListView x:Name="sectionListView"
-                  Grid.Row="2"
-                  SelectionMode="Single"
-                  ItemsSource="{Binding Sections}"
-                  SelectedItem="{Binding SelectedSection}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction
+                <ListView x:Name="sectionListView"
+                          Grid.Row="2"
+                          SelectionMode="Single"
+                          ItemsSource="{Binding Sections}"
+                          SelectedItem="{Binding SelectedSection}"
+                          ItemTemplate="{StaticResource SectionItemTemplate}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction
             Command="{Binding Path=DataContext.(viewModels:MainViewModel.BarnSelectionChangedCommand), 
 RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
             CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType=ListView}}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </ListView>
-        </Grid>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ListView>
+            </Grid>
+            <Border.Style>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Sections}" Value="{x:Null}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+        </Border>
     </DataTemplate>
 </ResourceDictionary>

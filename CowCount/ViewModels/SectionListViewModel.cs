@@ -5,18 +5,10 @@ namespace CowCount.ViewModels
 {
     public class SectionListViewModel : ViewModelBase
     {
-        private readonly ISavedDataService _savedDataService;
-        private Section[]? _sections;
+        private List<Section>? _sections;
         private Section? _selectedSection;
-        private Data _data;
-        private CancellationTokenSource? _loadingCancellationTokenSource;
 
-        public SectionListViewModel(ISavedDataService savedDataService)
-        {
-            _savedDataService = savedDataService;
-        }
-
-        public Section[]? Sections
+        public List<Section>? Sections
         {
             get => _sections;
             set
@@ -46,37 +38,9 @@ namespace CowCount.ViewModels
             }
         }
 
-        public async Task SetSectionAsync(Section[]? sections, CancellationToken cancellationToken)
+        public void SetSections(List<Section>? sections)
         {
-            if (sections is null)
-            {
-                return;
-            }
-
-            try
-            {
-                if (_loadingCancellationTokenSource is not null)
-                {
-                    await _loadingCancellationTokenSource.CancelAsync().ConfigureAwait(false);
-                    _loadingCancellationTokenSource.Dispose();
-                }
-                _loadingCancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-
-                Sections = sections;
-            }
-            catch (OperationCanceledException ex)
-            {
-            }
-            catch (Exception ex)
-            {
-            }
-        }
-
-        public void Dispose()
-        {
-            _loadingCancellationTokenSource?.Cancel();
-            _loadingCancellationTokenSource?.Dispose();
-            _loadingCancellationTokenSource = null;
+            Sections = sections;
         }
     }
 }

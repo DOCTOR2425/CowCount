@@ -4,33 +4,36 @@
                     xmlns:viewModels="clr-namespace:CowCount.ViewModels">
 
     <DataTemplate DataType="{x:Type viewModels:BarnsListViewModel}">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+        <Border BorderThickness="1"
+                BorderBrush="Black">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-            <Label Grid.Row="0"
-                   Content="Коровники"/>
+                <Label Grid.Row="0"
+                       Content="Коровники"/>
 
-            <Button Grid.Row="1"
-                    Content="Добавить коровник"/>
+                <Button Grid.Row="1"
+                        Content="Добавить коровник"/>
 
-            <ListView x:Name="barnsListView"
-                      Grid.Row="2"
-                      SelectionMode="Single"
-                      ItemsSource="{Binding Barns}"
-                      SelectedItem="{Binding SelectedBarn}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction
+                <ListView x:Name="barnsListView"
+                          Grid.Row="2"
+                          SelectionMode="Single"
+                          ItemsSource="{Binding Barns}"
+                          SelectedItem="{Binding SelectedBarn}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction
             Command="{Binding Path=DataContext.(viewModels:MainViewModel.BarnSelectionChangedCommand), 
 RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
             CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType=ListView}}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </ListView>
-        </Grid>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ListView>
+            </Grid>
+        </Border>
     </DataTemplate>
 </ResourceDictionary>
