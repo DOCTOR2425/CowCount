@@ -1,6 +1,6 @@
-﻿namespace CowCount.Models
+﻿namespace CowCount.ViewModels
 {
-    public class Cow
+    class CowViewModel
     {
         public int Number { get; set; }
         public string? Name { get; set; }

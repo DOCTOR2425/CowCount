@@ -1,9 +1,8 @@
 ﻿using CowCount.Models;
-using CowCount.Services.Interfaces;
 
 namespace CowCount.ViewModels
 {
-    public class SectionListViewModel : ViewModelBase
+    public class SectionsListViewModel : ViewModelBase
     {
         private List<Section>? _sections;
         private Section? _selectedSection;

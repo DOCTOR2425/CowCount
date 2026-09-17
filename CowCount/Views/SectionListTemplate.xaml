@@ -12,7 +12,7 @@
         </StackPanel>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type viewModels:SectionListViewModel}">
+    <DataTemplate DataType="{x:Type viewModels:SectionsListViewModel}">
         <Border BorderThickness="1"
                 BorderBrush="Black">
             <Grid>
@@ -37,7 +37,7 @@
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectionChanged">
                             <i:InvokeCommandAction
-            Command="{Binding Path=DataContext.(viewModels:MainViewModel.BarnSelectionChangedCommand), 
+            Command="{Binding Path=DataContext.(viewModels:MainViewModel.SectionSelectionChangedCommand), 
 RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
             CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType=ListView}}" />
                         </i:EventTrigger>

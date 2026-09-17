@@ -4,6 +4,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="BarnsListTemplate.xaml" />
         <ResourceDictionary Source="SectionListTemplate.xaml" />
+        <ResourceDictionary Source="CowsListTemplate.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <DataTemplate DataType="{x:Type viewModels:MainViewModel}">
@@ -11,14 +12,17 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition MinWidth="100" MaxWidth="120" Width="0.3*" />
                 <ColumnDefinition MinWidth="100" MaxWidth="180" Width="0.3*" />
-                <ColumnDefinition MinWidth="100" MaxWidth="150" Width="0.3*" />
+                <ColumnDefinition MinWidth="100" MaxWidth="180" Width="0.3*" />
             </Grid.ColumnDefinitions>
 
             <ContentControl Grid.Column="0"
                             Content="{Binding BarnsListViewModel}" />
 
             <ContentControl Grid.Column="1"
-                            Content="{Binding SectionListViewModel}" />
+                            Content="{Binding SectionsListViewModel}" />
+            
+            <ContentControl Grid.Column="2"
+                            Content="{Binding CowsListViewModel}" />
         </Grid>
     </DataTemplate>
 </ResourceDictionary>

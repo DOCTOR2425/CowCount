@@ -1,4 +1,58 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+                    xmlns:viewModels="clr-namespace:CowCount.ViewModels">
+    <DataTemplate x:Key="CowItemTemplate" DataType="{x:Type viewModels:CowViewModel}">
+        <StackPanel>
+            <Label Content="{Binding Number}"
+                   Padding="0"/>
+            <Label Content="{Binding Name}"
+                   Padding="0"/>
+        </StackPanel>
+    </DataTemplate>
     
+    <DataTemplate DataType="{x:Type viewModels:CowsListViewModel}">
+        <Border BorderThickness="1"
+                BorderBrush="Black">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0"
+                       Content="Коровы"/>
+
+                <Button Grid.Row="1"
+                        Content="Добавить корову в секцию"/>
+
+                <ListView x:Name="cowsListView"
+                          Grid.Row="2"
+                          SelectionMode="Single"
+                          ItemsSource="{Binding Cows}"
+                          SelectedItem="{Binding SelectedCow}"
+                          ItemTemplate="{StaticResource CowItemTemplate}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction
+            Command="{Binding Path=DataContext.(viewModels:MainViewModel.CowSelectionChangedCommand), 
+RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+            CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType=ListView}}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ListView>
+            </Grid>
+            <Border.Style>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Cows}" Value="{x:Null}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+        </Border>
+    </DataTemplate>
 </ResourceDictionary>

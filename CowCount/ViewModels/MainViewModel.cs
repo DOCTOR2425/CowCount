@@ -10,89 +10,29 @@ namespace CowCount.ViewModels
         private readonly CancellationTokenSource _mainCancellationTokenSource = new();
         private readonly ISavedDataService _savedDataService;
 
-        private List<int>? _barns;
-        private List<Section>? _sections;
-        private List<Cow>? _cows;
-        private List<string>? _groups;
-
         private Data _data;
 
         public MainViewModel(BarnsListViewModel barnsListViewModel,
-                             SectionListViewModel sectionsListViewModel,
+                             SectionsListViewModel sectionsListViewModel,
+                             CowsListViewModel cowsListViewModel,
                              ISavedDataService savedDataService)
         {
             BarnsListViewModel = barnsListViewModel;
-            SectionListViewModel = sectionsListViewModel;
+            SectionsListViewModel = sectionsListViewModel;
+            CowsListViewModel = cowsListViewModel;
             _savedDataService = savedDataService;
 
             BarnSelectionChangedCommand = new RelayCommand(BarnSelectionChangedCommandExecute);
             SectionSelectionChangedCommand = new RelayCommand(SectionSelectionChangedCommandExecute);
+            CowSelectionChangedCommand = new RelayCommand(CowSelectionChangedCommandExecute);
         }
 
         public BarnsListViewModel BarnsListViewModel { get; }
-        public SectionListViewModel SectionListViewModel { get; }
+        public SectionsListViewModel SectionsListViewModel { get; }
+        public CowsListViewModel CowsListViewModel { get; }
         public ICommand BarnSelectionChangedCommand { get; set; }
         public ICommand SectionSelectionChangedCommand { get; set; }
-
-        public List<int>? Barns
-        {
-            get => _barns;
-            set
-            {
-                if (value == _barns)
-                {
-                    return;
-                }
-
-                _barns = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public List<Section>? Sections
-        {
-            get => _sections;
-            set
-            {
-                if (value == _sections)
-                {
-                    return;
-                }
-
-                _sections = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public List<Cow>? Cows
-        {
-            get => _cows;
-            set
-            {
-                if (value == _cows)
-                {
-                    return;
-                }
-
-                _cows = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public List<string>? Groups
-        {
-            get => _groups;
-            set
-            {
-                if (value == _groups)
-                {
-                    return;
-                }
-
-                _groups = value;
-                OnPropertyChanged();
-            }
-        }
+        public ICommand CowSelectionChangedCommand { get; set; }
 
         public async Task InitializeAsync()
         {
@@ -113,12 +53,12 @@ namespace CowCount.ViewModels
             {
                 if (_data.Sections is null)
                 {
-                    SectionListViewModel.SetSections(null);
+                    SectionsListViewModel.SetSections(null);
                     return;
                 }
 
                 var sections = _data.Sections.Where(s => s.BarnNumber == selectedBarn).ToList();
-                SectionListViewModel.SetSections(sections);
+                SectionsListViewModel.SetSections(sections);
             }
         }
 
@@ -129,13 +69,18 @@ namespace CowCount.ViewModels
             {
                 if (_data.Cows is null)
                 {
-
+                    CowsListViewModel.SetCows(null);
                     return;
                 }
 
-                //var cows = _data.Sections.Where(s => s.BarnNumber == selectedBarn).ToList();
-                //SectionListViewModel.SetSectionsAsync(cows);
+                var cows = _data.Cows.Where(s => s.SectionNumber == selectedSection.Number).ToList();
+                CowsListViewModel.SetCows(cows);
             }
+        }
+
+        private void CowSelectionChangedCommandExecute(object? obj)
+        {
+
         }
 
         public void Dispose()

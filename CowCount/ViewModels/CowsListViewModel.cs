@@ -37,7 +37,7 @@ namespace CowCount.ViewModels
             }
         }
 
-        public void SetSections(List<Cow>? cows)
+        public void SetCows(List<Cow>? cows)
         {
             Cows = cows;
         }

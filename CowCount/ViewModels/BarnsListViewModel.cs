@@ -1,7 +1,4 @@
-﻿using CowCount.Models;
-using CowCount.Services.Interfaces;
-
-namespace CowCount.ViewModels
+﻿namespace CowCount.ViewModels
 {
     public class BarnsListViewModel : ViewModelBase
     {
