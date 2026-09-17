@@ -3,7 +3,7 @@
                     xmlns:viewModels="clr-namespace:CowCount.ViewModels">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="BarnsListTemplate.xaml" />
-        <ResourceDictionary Source="SectionListTemplate.xaml" />
+        <ResourceDictionary Source="SectionsListTemplate.xaml" />
         <ResourceDictionary Source="CowsListTemplate.xaml" />
     </ResourceDictionary.MergedDictionaries>
 

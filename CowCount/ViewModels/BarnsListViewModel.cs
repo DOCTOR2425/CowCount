@@ -2,10 +2,10 @@
 {
     public class BarnsListViewModel : ViewModelBase
     {
-        private List<int>? _barns;
+        private ObservableCollectionEx<int>? _barns;
         private int? _selectedBarn;
 
-        public List<int>? Barns
+        public ObservableCollectionEx<int>? Barns
         {
             get => _barns;
             set
@@ -37,7 +37,12 @@
 
         public void SetBarns(List<int>? barns)
         {
-            Barns = barns;
+            if (barns is null)
+            {
+                Barns = null;
+                return;
+            }
+            Barns = new ObservableCollectionEx<int>(barns);
         }
     }
 }

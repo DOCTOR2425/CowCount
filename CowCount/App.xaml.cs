@@ -21,6 +21,9 @@ namespace CowCount
             builder.RegisterType<SavedDataService>()
                    .As<ISavedDataService>()
                    .SingleInstance();
+            builder.RegisterType<DialogService>()
+                   .As<IDialogService>()
+                   .SingleInstance();
 
             builder.RegisterType<MainWindow>().AsSelf();
             builder.RegisterType<MainViewModel>().AsSelf();

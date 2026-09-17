@@ -4,10 +4,10 @@ namespace CowCount.ViewModels
 {
     public class SectionsListViewModel : ViewModelBase
     {
-        private List<Section>? _sections;
+        private ObservableCollectionEx<Section>? _sections;
         private Section? _selectedSection;
 
-        public List<Section>? Sections
+        public ObservableCollectionEx<Section>? Sections
         {
             get => _sections;
             set
@@ -39,7 +39,12 @@ namespace CowCount.ViewModels
 
         public void SetSections(List<Section>? sections)
         {
-            Sections = sections;
+            if (sections is null)
+            {
+                Sections = null;
+                return;
+            }
+            Sections = new ObservableCollectionEx<Section>(sections);
         }
     }
 }

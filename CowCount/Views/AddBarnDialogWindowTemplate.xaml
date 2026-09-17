@@ -1,0 +1,18 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:viewModels="clr-namespace:CowCount.ViewModels"
+                    xmlns:local="clr-namespace:CowCount.AttachedProperty">
+    <DataTemplate DataType="{x:Type viewModels:AddBarnDialogWindowViewModel}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Label Content="Введите номер коровника"
+                   Grid.Row="0"/>
+            <TextBox Text="{Binding BarnNumber}"
+                     Grid.Row="1"
+                     local:NumericInputProperty.IsNumeric="True"/>
+        </Grid>
+    </DataTemplate>
+</ResourceDictionary>

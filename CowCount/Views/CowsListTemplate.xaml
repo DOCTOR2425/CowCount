@@ -43,16 +43,6 @@ RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}
                     </i:Interaction.Triggers>
                 </ListView>
             </Grid>
-            <Border.Style>
-                <Style TargetType="{x:Type Border}">
-                    <Setter Property="Visibility" Value="Visible"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding Cows}" Value="{x:Null}">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Border.Style>
         </Border>
     </DataTemplate>
 </ResourceDictionary>

@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:viewModels="clr-namespace:CowCount.ViewModels">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="AddBarnDialogWindowTemplate.xaml" />
+        <ResourceDictionary Source="AddSectionDialogWindowTemplate.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <DataTemplate DataType="{x:Type viewModels:DialogViewModel}">
+        <ContentControl Content="{Binding ContentViewModel}" />
+    </DataTemplate>
+</ResourceDictionary>

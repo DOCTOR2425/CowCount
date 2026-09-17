@@ -63,13 +63,6 @@ namespace CowCount.Services.Implementations
             {
                 token.ThrowIfCancellationRequested();
 
-                var directory = Path.GetDirectoryName(DataFileName);
-
-                if (directory is not null && !Directory.Exists(directory))
-                {
-                    Directory.CreateDirectory(directory);
-                }
-
                 var options = new JsonSerializerOptions
                 {
                     WriteIndented = true
