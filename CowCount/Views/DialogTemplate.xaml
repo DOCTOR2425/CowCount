@@ -4,6 +4,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="AddBarnDialogWindowTemplate.xaml" />
         <ResourceDictionary Source="AddSectionDialogWindowTemplate.xaml" />
+        <ResourceDictionary Source="AddCowDialogWindowTemplate.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <DataTemplate DataType="{x:Type viewModels:DialogViewModel}">

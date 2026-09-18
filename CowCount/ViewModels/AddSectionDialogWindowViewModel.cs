@@ -26,10 +26,14 @@ namespace CowCount.ViewModels
                 Width = 200
             };
 
-            _existingBarns = existingBarns;
-            _existingGroups = existingGroups;
+            ExistingBarns = new(existingBarns);
+            if (existingGroups is not null)
+            {
+                ExistingGroups = new(existingGroups);
+                ExistingGroups.Add(string.Empty);
+            }
 
-            if(defaultValue is not null)
+            if (defaultValue is not null)
             {
                 Number = defaultValue.Number;
                 Group = defaultValue.Group;

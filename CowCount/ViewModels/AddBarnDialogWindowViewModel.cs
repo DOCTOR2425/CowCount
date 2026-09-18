@@ -18,7 +18,7 @@ namespace CowCount.ViewModels
                 Width = 200
             };
 
-            _barnNumber = defaultValue;
+           BarnNumber = defaultValue;
         }
 
         public ModalWindowSettings ModalWindowSettings { get; }

@@ -6,7 +6,7 @@
         <StackPanel>
             <Label Content="{Binding Number}"
                    Padding="0"/>
-            <Label Content="{Binding Group}"
+            <Label Content="{Binding Group, TargetNullValue=''}"
                    Padding="0"
                    Foreground="DarkGray"/>
         </StackPanel>

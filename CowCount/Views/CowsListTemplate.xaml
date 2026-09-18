@@ -6,8 +6,9 @@
         <StackPanel>
             <Label Content="{Binding Number}"
                    Padding="0"/>
-            <Label Content="{Binding Name}"
-                   Padding="0"/>
+            <Label Content="{Binding Group, TargetNullValue=''}"
+                   Padding="0"
+                   Foreground="DarkGray"/>
         </StackPanel>
     </DataTemplate>
     
@@ -25,7 +26,9 @@
                        Content="Коровы"/>
 
                 <Button Grid.Row="1"
-                        Content="Добавить корову в секцию"/>
+                        Content="Добавить корову в секцию"
+                        Command="{Binding Path=DataContext.(viewModels:MainViewModel.AddCowCommand),
+                                  RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
 
                 <ListView x:Name="cowsListView"
                           Grid.Row="2"

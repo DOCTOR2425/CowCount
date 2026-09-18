@@ -14,14 +14,24 @@
                 <ColumnDefinition MinWidth="100" MaxWidth="180" Width="0.3*" />
                 <ColumnDefinition MinWidth="100" MaxWidth="180" Width="0.3*" />
             </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            
+            
 
             <ContentControl Grid.Column="0"
+                            Grid.Row="1"
                             Content="{Binding BarnsListViewModel}" />
 
             <ContentControl Grid.Column="1"
+                            Grid.Row="1"
                             Content="{Binding SectionsListViewModel}" />
             
             <ContentControl Grid.Column="2"
+                            Grid.Row="1"
                             Content="{Binding CowsListViewModel}" />
         </Grid>
     </DataTemplate>

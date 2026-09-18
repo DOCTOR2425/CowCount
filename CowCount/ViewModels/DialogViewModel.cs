@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Input;
 
 namespace CowCount.ViewModels
-{
+{// TODO Сделать невозможным нажатие кнопки OK при невыполнении условия _canExecute для OkCommand = new RelayCommand(OkCommandExecute);
     public class DialogViewModel : ViewModelBase
     {
         private const double DefaultWidth = 800;

@@ -18,6 +18,7 @@ namespace CowCount.Services.Implementations
             window.DataContext = dialogViewModel;
 
             window.ShowDialog();
+            window.Close();
 
             return dialogViewModel.DialogResult;
         }

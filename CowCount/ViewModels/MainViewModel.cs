@@ -1,6 +1,7 @@
 ﻿using CowCount.Commands;
 using CowCount.Models;
 using CowCount.Services.Interfaces;
+using System.Reflection.Metadata.Ecma335;
 using System.Windows;
 using System.Windows.Input;
 
@@ -31,6 +32,7 @@ namespace CowCount.ViewModels
             CowSelectionChangedCommand = new RelayCommand(CowSelectionChangedCommandExecute);
             AddBarnCommand = new RelayCommand(AddBarnCommandExecute);
             AddSectionCommand = new RelayCommand(AddSectionCommandExecute);
+            AddCowCommand = new RelayCommand(AddCowCommandExecute);
         }
 
         public BarnsListViewModel BarnsListViewModel { get; }
@@ -41,6 +43,7 @@ namespace CowCount.ViewModels
         public ICommand CowSelectionChangedCommand { get; set; }
         public ICommand AddBarnCommand { get; set; }
         public ICommand AddSectionCommand { get; set; }
+        public ICommand AddCowCommand { get; set; }
 
         public async Task InitializeAsync()
         {
@@ -127,6 +130,15 @@ namespace CowCount.ViewModels
 
         private void AddSectionCommandExecute(object? obj)
         {
+            if (_data.Barns is null || _data.Barns.Count == 0)
+            {
+                MessageBox.Show("Не добавлено ни одного коровника.",
+                                "Нет данных.",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Information);
+                return;
+            }
+
             var dialogViewModel = new AddSectionDialogWindowViewModel(
                 _data.Barns,
                 _data.Groups,
@@ -135,7 +147,7 @@ namespace CowCount.ViewModels
 
             if (dialogResult is null or false ||
                 dialogViewModel.Number is null ||
-                dialogViewModel.BarnNumber is null)
+                     dialogViewModel.BarnNumber is null)
             {
                 return;
             }
@@ -166,8 +178,79 @@ namespace CowCount.ViewModels
             Task.Factory.StartNew(() =>
                 _savedDataService.UpdateDataAsync(_data, _mainCancellationTokenSource.Token));
 
-            var sections = _data.Sections.Where(s => s.BarnNumber == BarnsListViewModel.SelectedBarn).ToList();
-            SectionsListViewModel.SetSections(sections);
+            if (BarnsListViewModel.SelectedBarn is not null)
+            {
+                var sections = _data.Sections.Where(s => s.BarnNumber == BarnsListViewModel.SelectedBarn).ToList();
+                SectionsListViewModel.SetSections(sections);
+            }
+        }
+
+        private void AddCowCommandExecute(object? obj)
+        {
+            if (_data.Barns is null || _data.Barns.Count == 0 ||
+                _data.Sections is null || _data.Sections.Count == 0)
+            {
+                MessageBox.Show("Не добавлено ни одного коровника или секции.",
+                                "Нет данных.",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Information);
+                return;
+            }
+
+            var dialogViewModel = new AddCowDialogWindowViewModel(
+                _data.Barns,
+                _data.Sections,
+                _data.Groups,
+                obj is Cow defaultValue ? defaultValue : null);
+            var dialogResult = _dialogService.ShowDialog(dialogViewModel);
+
+            if (dialogResult is null or false)
+            {
+                return;
+            }
+            if (dialogViewModel.Number is null ||
+                dialogViewModel.BarnNumber is null ||
+                dialogViewModel.Section is null)
+            {
+                return;
+            }
+
+            var cow = new Cow()
+            {
+                Number = (int)dialogViewModel.Number,
+                BarnNumber = (int)dialogViewModel.BarnNumber,
+                Group = dialogViewModel.Group,
+                Name = dialogViewModel.Name,
+                SectionNumber = (int)dialogViewModel.Section.Number,
+                Note = dialogViewModel.Note
+            };
+
+            if (_data.Cows is null)
+            {
+                _data.Cows = new List<Cow>();
+            }
+            else if (_data.Cows.Any(c => c.Number == cow.Number))
+            {
+                MessageBox.Show($"Корова с номером {cow.Number} уже существует.",
+                                "Ошибка добавления.",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Warning);
+                AddCowCommandExecute(cow);
+                return;
+            }
+
+            _data.Cows.Add(cow);
+            Task.Factory.StartNew(() =>
+                _savedDataService.UpdateDataAsync(_data, _mainCancellationTokenSource.Token));
+
+            if (SectionsListViewModel.SelectedSection is not null)
+            {
+                var cows = _data.Cows.Where(c =>
+                    c.BarnNumber == BarnsListViewModel.SelectedBarn &&
+                    c.SectionNumber == SectionsListViewModel.SelectedSection.Number)
+                    .ToList();
+                CowsListViewModel.SetCows(cows);
+            }
         }
 
         public void Dispose()
