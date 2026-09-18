@@ -1,7 +1,6 @@
 ﻿using CowCount.Commands;
 using CowCount.Models;
 using CowCount.Services.Interfaces;
-using System.Reflection.Metadata.Ecma335;
 using System.Windows;
 using System.Windows.Input;
 
@@ -15,12 +14,14 @@ namespace CowCount.ViewModels
 
         private Data _data;
 
-        public MainViewModel(BarnsListViewModel barnsListViewModel,
+        public MainViewModel(HeaderViewModel headerViewModel,
+                             BarnsListViewModel barnsListViewModel,
                              SectionsListViewModel sectionsListViewModel,
                              CowsListViewModel cowsListViewModel,
                              ISavedDataService savedDataService,
                              IDialogService dialogService)
         {
+            HeaderViewModel = headerViewModel;
             BarnsListViewModel = barnsListViewModel;
             SectionsListViewModel = sectionsListViewModel;
             CowsListViewModel = cowsListViewModel;
@@ -35,6 +36,7 @@ namespace CowCount.ViewModels
             AddCowCommand = new RelayCommand(AddCowCommandExecute);
         }
 
+        public HeaderViewModel HeaderViewModel { get; }
         public BarnsListViewModel BarnsListViewModel { get; }
         public SectionsListViewModel SectionsListViewModel { get; }
         public CowsListViewModel CowsListViewModel { get; }
@@ -50,6 +52,7 @@ namespace CowCount.ViewModels
             try
             {
                 _data = await _savedDataService.GetDataAsync(_mainCancellationTokenSource.Token);
+                await HeaderViewModel.InitializeAsync();
                 BarnsListViewModel.SetBarns(_data.Barns);
             }
             catch (Exception exception)
