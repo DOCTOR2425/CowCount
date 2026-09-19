@@ -1,0 +1,21 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:viewModels="clr-namespace:CowCount.ViewModels">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="MainViewModelTemplate.xaml" />
+        <ResourceDictionary Source="GroupsTemplate.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    
+    <DataTemplate DataType="{x:Type viewModels:TabsViewModel}">
+        <TabControl SelectedIndex="{Binding SelectedTabIndex}">
+            <TabItem Header="Основное">
+                <ContentControl Content="{Binding MainViewModel}" />
+            </TabItem>
+
+            <TabItem Header="Группы">
+                <ContentControl Content="{Binding GroupsViewModel}" />
+            </TabItem>
+        </TabControl>
+    </DataTemplate>
+
+</ResourceDictionary>

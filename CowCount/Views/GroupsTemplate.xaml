@@ -1,0 +1,29 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:viewModels="clr-namespace:CowCount.ViewModels">
+    <DataTemplate DataType="{x:Type viewModels:GroupsViewModel}">
+        <StackPanel Margin="10">
+            <Button Content="Добавить группу"
+                Command="{Binding AddGroupCommand}" />
+
+            <ItemsControl ItemsSource="{Binding Groups}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Margin="5">
+                            <TextBlock Text="{Binding}" Width="150"/>
+                            <Button Content="Редактировать"
+                                Command="{Binding DataContext.EditGroupCommand,
+                                          RelativeSource={RelativeSource AncestorType=ContentControl}}"
+                                CommandParameter="{Binding}" />
+                            <Button Content="Удалить"
+                                Command="{Binding DataContext.DeleteGroupCommand,
+                                          RelativeSource={RelativeSource AncestorType=ContentControl}}"
+                                CommandParameter="{Binding}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+    </DataTemplate>
+
+</ResourceDictionary>
