@@ -2,7 +2,6 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:viewModels="clr-namespace:CowCount.ViewModels">
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="HeaderTemplate.xaml" />
         <ResourceDictionary Source="BarnsListTemplate.xaml" />
         <ResourceDictionary Source="SectionsListTemplate.xaml" />
         <ResourceDictionary Source="CowsListTemplate.xaml" />
@@ -19,10 +18,6 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-
-            <ContentControl Grid.Column="0"
-                            Grid.Row="0"
-                            Content="{Binding HeaderViewModel}"/>
 
             <ContentControl Grid.Column="0"
                             Grid.Row="1"

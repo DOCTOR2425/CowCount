@@ -18,8 +18,8 @@
 
                 <Button Grid.Row="1"
                         Content="Добавить коровник"
-                        Command="{Binding Path=DataContext.(viewModels:MainViewModel.AddBarnCommand),
-                        RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
+                        Command="{Binding DataContext.MainViewModel.AddBarnCommand,
+                                  RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
 
                 <ListView x:Name="barnsListView"
                           Grid.Row="2"
@@ -29,9 +29,9 @@
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectionChanged">
                             <i:InvokeCommandAction
-            Command="{Binding Path=DataContext.(viewModels:MainViewModel.BarnSelectionChangedCommand), 
-RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
-            CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType=ListView}}" />
+                            Command="{Binding DataContext.MainViewModel.BarnSelectionChangedCommand, 
+                            RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                            CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType=ListView}}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </ListView>

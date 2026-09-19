@@ -29,7 +29,6 @@ namespace CowCount
             builder.RegisterType<TabsViewModel>().AsSelf();
             builder.RegisterType<MainViewModel>().AsSelf();
             builder.RegisterType<GroupsViewModel>().AsSelf();
-            builder.RegisterType<HeaderViewModel>().AsSelf();
             builder.RegisterType<BarnsListViewModel>().AsSelf();
             builder.RegisterType<SectionsListViewModel>().AsSelf();
             builder.RegisterType<CowsListViewModel>().AsSelf();
@@ -37,15 +36,8 @@ namespace CowCount
             Container = builder.Build();
             _applicationScope = Container.BeginLifetimeScope();
 
-            //var mainViewModel = _applicationScope.Resolve<MainViewModel>();
-            //_ = mainViewModel.InitializeAsync();
-
-            //var window = _applicationScope.Resolve<MainWindow>();
-            //window.DataContext = mainViewModel;
-            //window.Show();
-
             var tabsViewModel = _applicationScope.Resolve<TabsViewModel>();
-            //_ = tabsViewModel.InitializeAsync();
+            _ = tabsViewModel.InitializeAsync();
 
             var window = _applicationScope.Resolve<MainWindow>();
             window.DataContext = tabsViewModel;

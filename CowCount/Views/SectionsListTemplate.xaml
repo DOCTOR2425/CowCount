@@ -27,8 +27,8 @@
 
                 <Button Grid.Row="1"
                         Content="Добавить секцию в коровник"
-                        Command="{Binding Path=DataContext.(viewModels:MainViewModel.AddSectionCommand),
-                        RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
+                        Command="{Binding DataContext.MainViewModel.AddSectionCommand,
+                        RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
 
                 <ListView x:Name="sectionListView"
                           Grid.Row="2"
@@ -39,8 +39,8 @@
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectionChanged">
                             <i:InvokeCommandAction
-            Command="{Binding Path=DataContext.(viewModels:MainViewModel.SectionSelectionChangedCommand),
-RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+            Command="{Binding DataContext.MainViewModel.SectionSelectionChangedCommand,
+            RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
             CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType=ListView}}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>

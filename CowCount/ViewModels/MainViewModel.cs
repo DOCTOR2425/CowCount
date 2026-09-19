@@ -8,20 +8,18 @@ namespace CowCount.ViewModels
 {
     public class MainViewModel : ViewModelBase, IDisposable
     {
-        private readonly CancellationTokenSource _mainCancellationTokenSource = new();
         private readonly ISavedDataService _savedDataService;
         private readonly IDialogService _dialogService;
 
+        private CancellationTokenSource _cancellationTokenSource;
         private Data _data;
 
-        public MainViewModel(HeaderViewModel headerViewModel,
-                             BarnsListViewModel barnsListViewModel,
+        public MainViewModel(BarnsListViewModel barnsListViewModel,
                              SectionsListViewModel sectionsListViewModel,
                              CowsListViewModel cowsListViewModel,
                              ISavedDataService savedDataService,
                              IDialogService dialogService)
         {
-            HeaderViewModel = headerViewModel;
             BarnsListViewModel = barnsListViewModel;
             SectionsListViewModel = sectionsListViewModel;
             CowsListViewModel = cowsListViewModel;
@@ -36,7 +34,6 @@ namespace CowCount.ViewModels
             AddCowCommand = new RelayCommand(AddCowCommandExecute);
         }
 
-        public HeaderViewModel HeaderViewModel { get; }
         public BarnsListViewModel BarnsListViewModel { get; }
         public SectionsListViewModel SectionsListViewModel { get; }
         public CowsListViewModel CowsListViewModel { get; }
@@ -47,12 +44,14 @@ namespace CowCount.ViewModels
         public ICommand AddSectionCommand { get; set; }
         public ICommand AddCowCommand { get; set; }
 
-        public async Task InitializeAsync()
+        public async Task InitializeAsync(CancellationToken parentToken)
         {
+            _cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(parentToken);
+
             try
             {
-                _data = await _savedDataService.GetDataAsync(_mainCancellationTokenSource.Token);
-                await HeaderViewModel.InitializeAsync();
+                _data = await _savedDataService.GetDataAsync(_cancellationTokenSource.Token)
+                                               .ConfigureAwait(false);
                 BarnsListViewModel.SetBarns(_data.Barns);
             }
             catch (Exception exception)
@@ -126,7 +125,7 @@ namespace CowCount.ViewModels
 
             _data.Barns.Add((int)dialogViewModel.BarnNumber);
             Task.Factory.StartNew(() =>
-                _savedDataService.UpdateDataAsync(_data, _mainCancellationTokenSource.Token));
+                _savedDataService.UpdateDataAsync(_data, _cancellationTokenSource.Token));
 
             BarnsListViewModel.SetBarns(_data.Barns);
         }
@@ -179,7 +178,7 @@ namespace CowCount.ViewModels
 
             _data.Sections.Add(section);
             Task.Factory.StartNew(() =>
-                _savedDataService.UpdateDataAsync(_data, _mainCancellationTokenSource.Token));
+                _savedDataService.UpdateDataAsync(_data, _cancellationTokenSource.Token));
 
             if (BarnsListViewModel.SelectedBarn is not null)
             {
@@ -244,7 +243,7 @@ namespace CowCount.ViewModels
 
             _data.Cows.Add(cow);
             Task.Factory.StartNew(() =>
-                _savedDataService.UpdateDataAsync(_data, _mainCancellationTokenSource.Token));
+                _savedDataService.UpdateDataAsync(_data, _cancellationTokenSource.Token));
 
             if (SectionsListViewModel.SelectedSection is not null)
             {
@@ -258,7 +257,8 @@ namespace CowCount.ViewModels
 
         public void Dispose()
         {
-            _mainCancellationTokenSource.Dispose();
+            _cancellationTokenSource.Cancel();
+            _cancellationTokenSource.Dispose();
         }
     }
 }
