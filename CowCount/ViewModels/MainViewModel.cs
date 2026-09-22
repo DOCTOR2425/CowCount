@@ -27,6 +27,8 @@ namespace CowCount.ViewModels
             _dialogService = dialogService;
 
             BarnSelectionChangedCommand = new RelayCommand(BarnSelectionChangedCommandExecute);
+            DeleteBarnCommand = new RelayCommand(DeleteBarnCommandExecute);
+            BarnSelectionChangedCommand = new RelayCommand(BarnSelectionChangedCommandExecute);
             SectionSelectionChangedCommand = new RelayCommand(SectionSelectionChangedCommandExecute);
             CowSelectionChangedCommand = new RelayCommand(CowSelectionChangedCommandExecute);
             AddBarnCommand = new RelayCommand(AddBarnCommandExecute);
@@ -38,6 +40,7 @@ namespace CowCount.ViewModels
         public SectionsListViewModel SectionsListViewModel { get; }
         public CowsListViewModel CowsListViewModel { get; }
         public ICommand BarnSelectionChangedCommand { get; set; }
+        public ICommand DeleteBarnCommand { get; set; }
         public ICommand SectionSelectionChangedCommand { get; set; }
         public ICommand CowSelectionChangedCommand { get; set; }
         public ICommand AddBarnCommand { get; set; }
@@ -74,6 +77,11 @@ namespace CowCount.ViewModels
                 var sections = _data.Sections.Where(s => s.BarnNumber == selectedBarn).ToList();
                 SectionsListViewModel.SetSections(sections);
             }
+        }
+
+        private void DeleteBarnCommandExecute(object? obj)
+        {
+            MessageBox.Show($"Удаление {obj}");
         }
 
         private void SectionSelectionChangedCommandExecute(object? obj)
