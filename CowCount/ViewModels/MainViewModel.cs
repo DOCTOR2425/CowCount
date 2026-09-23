@@ -1,7 +1,7 @@
 ﻿using CowCount.Commands;
 using CowCount.Models;
 using CowCount.Services.Interfaces;
-using System.Text.RegularExpressions;
+using System.CodeDom.Compiler;
 using System.Windows;
 using System.Windows.Input;
 
@@ -29,8 +29,8 @@ namespace CowCount.ViewModels
 
             BarnSelectionChangedCommand = new RelayCommand(BarnSelectionChangedCommandExecute);
             DeleteBarnCommand = new RelayCommand(DeleteBarnCommandExecute);
-            BarnSelectionChangedCommand = new RelayCommand(BarnSelectionChangedCommandExecute);
             SectionSelectionChangedCommand = new RelayCommand(SectionSelectionChangedCommandExecute);
+            DeleteSectionCommand = new RelayCommand(DeleteSectionCommandExecute);
             CowSelectionChangedCommand = new RelayCommand(CowSelectionChangedCommandExecute);
             AddBarnCommand = new RelayCommand(AddBarnCommandExecute);
             AddSectionCommand = new RelayCommand(AddSectionCommandExecute);
@@ -43,6 +43,7 @@ namespace CowCount.ViewModels
         public ICommand BarnSelectionChangedCommand { get; set; }
         public ICommand DeleteBarnCommand { get; set; }
         public ICommand SectionSelectionChangedCommand { get; set; }
+        public ICommand DeleteSectionCommand { get; set; }
         public ICommand CowSelectionChangedCommand { get; set; }
         public ICommand AddBarnCommand { get; set; }
         public ICommand AddSectionCommand { get; set; }
@@ -134,6 +135,11 @@ namespace CowCount.ViewModels
                                                  c.BarnNumber == selectedSection.BarnNumber).ToList();
                 CowsListViewModel.SetCows(cows);
             }
+        }
+
+        private void DeleteSectionCommandExecute(object? obj)
+        {
+            MessageBox.Show($"Удаление {obj}");
         }
 
         private void CowSelectionChangedCommandExecute(object? obj)

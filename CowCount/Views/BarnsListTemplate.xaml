@@ -13,6 +13,7 @@
                     CommandParameter="{Binding Content, RelativeSource={RelativeSource AncestorType=ListViewItem}}" />
             <Label Content="{Binding}"/>
         </DockPanel>
+        
         <DataTemplate.Triggers>
             <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ListViewItem}}" 
                          Value="True">
