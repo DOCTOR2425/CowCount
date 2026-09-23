@@ -1,6 +1,7 @@
 ﻿using CowCount.Commands;
 using CowCount.Models;
 using CowCount.Services.Interfaces;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 
@@ -81,7 +82,41 @@ namespace CowCount.ViewModels
 
         private void DeleteBarnCommandExecute(object? obj)
         {
-            MessageBox.Show($"Удаление {obj}");
+            if (obj is not int targetBarn ||
+                _data.Barns is null)
+            {
+                return;
+            }
+
+            var result = MessageBox.Show(
+                $"Вы хотите удалить коровник \"{targetBarn}\"?\n" +
+                $"Все коровы и секции коровника \"{targetBarn}\" УДАЛЯТЬСЯ.",
+                "Удаление группы.",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                _data.Barns.Remove(targetBarn);
+                if (_data.Sections is not null)
+                {
+                    _data.Sections.RemoveAll(s => s.BarnNumber == targetBarn);
+                }
+                if (_data.Cows is not null)
+                {
+                    _data.Cows.RemoveAll(c => c.BarnNumber == targetBarn);
+                }
+
+                Task.Factory.StartNew(() =>
+                    _savedDataService.UpdateDataAsync(_data, _cancellationTokenSource.Token));
+
+                if (BarnsListViewModel.SelectedBarn == targetBarn)
+                {
+                    SectionsListViewModel.SetSections(null);
+                    CowsListViewModel.SetCows(null);
+                }
+                BarnsListViewModel.SetBarns(_data.Barns);
+            }
         }
 
         private void SectionSelectionChangedCommandExecute(object? obj)
