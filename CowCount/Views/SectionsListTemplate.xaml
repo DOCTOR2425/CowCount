@@ -22,7 +22,7 @@
         
         <DataTemplate.Triggers>
             <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ListViewItem}}" 
-                 Value="True">
+                         Value="True">
                 <Setter TargetName="DeleteButton" Property="Visibility" Value="Visible"/>
             </DataTrigger>
         </DataTemplate.Triggers>
