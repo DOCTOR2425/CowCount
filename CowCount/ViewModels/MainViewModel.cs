@@ -76,8 +76,8 @@ namespace CowCount.ViewModels
                     return;
                 }
 
-                var sections = _data.Sections.Where(s => s.BarnNumber == selectedBarn).ToList();
-                SectionsListViewModel.SetSections(sections);
+                SectionsListViewModel.SetSections(
+                    _data.Sections.Where(s => s.BarnNumber == selectedBarn).ToList());
             }
         }
 
@@ -139,7 +139,39 @@ namespace CowCount.ViewModels
 
         private void DeleteSectionCommandExecute(object? obj)
         {
-            MessageBox.Show($"Удаление {obj}");
+            if (obj is not Section targetSection ||
+                _data.Sections is null)
+            {
+                return;
+            }
+
+            var result = MessageBox.Show(
+                $"Вы хотите удалить секцию \"{targetSection.Number}\" коровника \"{targetSection.BarnNumber}\"?\n" +
+                $"Все коровы секции \"{targetSection.Number}\" коровника \"{targetSection.BarnNumber}\" УДАЛЯТЬСЯ.",
+                "Удаление секции.",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                _data.Sections.Remove(targetSection);
+                if (_data.Cows is not null)
+                {
+                    _data.Cows.RemoveAll(c => 
+                        c.SectionNumber == targetSection.Number &&
+                        c.BarnNumber == targetSection.BarnNumber);
+                }
+
+                Task.Factory.StartNew(() =>
+                    _savedDataService.UpdateDataAsync(_data, _cancellationTokenSource.Token));
+
+                if (SectionsListViewModel.SelectedSection == targetSection)
+                {
+                    CowsListViewModel.SetCows(null);
+                }
+                SectionsListViewModel.SetSections(
+                    _data.Sections.Where(s => s.BarnNumber == targetSection.BarnNumber).ToList());
+            }
         }
 
         private void CowSelectionChangedCommandExecute(object? obj)
