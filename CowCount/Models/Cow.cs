@@ -10,7 +10,7 @@
         public string? Breed { get; set; }
         public bool Imported { get; set; }
         public string? Note { get; set; }
-        public List<string>? ActionLog { get; set; }
+        public List<CowAction>? ActionLog { get; set; }
         public DateTime Birthday { get; set; }
         public DateTime DeathDate { get; set; }
         /// <summary>
@@ -21,6 +21,9 @@
         /// Дата последнего отёла
         /// </summary>
         public DateTime LastCalvingDate { get; set; }
+        /// <summary>
+        /// Кличка донора семени для отёла
+        /// </summary>
         public string? SpermDonorNickname { get; set; }
     }
 }

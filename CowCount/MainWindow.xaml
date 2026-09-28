@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CowCount"
         mc:Ignorable="d"
-        Title="Cow count" Height="450" Width="800">
+        Title="Cow count" Height="630" Width="1000">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

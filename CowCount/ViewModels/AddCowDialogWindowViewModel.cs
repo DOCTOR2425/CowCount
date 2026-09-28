@@ -48,7 +48,6 @@ namespace CowCount.ViewModels
             {
                 Number = defaultValue.Number;
                 BarnNumber = defaultValue.BarnNumber;
-                Name = defaultValue.Name;
                 Group = defaultValue.Group;
                 Note = defaultValue.Note;
 

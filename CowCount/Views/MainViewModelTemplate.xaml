@@ -5,14 +5,16 @@
         <ResourceDictionary Source="BarnsListTemplate.xaml" />
         <ResourceDictionary Source="SectionsListTemplate.xaml" />
         <ResourceDictionary Source="CowsListTemplate.xaml" />
+        <ResourceDictionary Source="CowPanelTemplate.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <DataTemplate DataType="{x:Type viewModels:MainViewModel}">
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition MinWidth="100" MaxWidth="120" Width="0.3*" />
-                <ColumnDefinition MinWidth="100" MaxWidth="180" Width="0.3*" />
-                <ColumnDefinition MinWidth="100" MaxWidth="180" Width="0.3*" />
+                <ColumnDefinition MinWidth="100" Width="0.2*" />
+                <ColumnDefinition MinWidth="100" Width="0.2*" />
+                <ColumnDefinition MinWidth="100" Width="0.2*" />
+                <ColumnDefinition MinWidth="120" Width="0.4*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -30,6 +32,10 @@
             <ContentControl Grid.Column="2"
                             Grid.Row="1"
                             Content="{Binding CowsListViewModel}" />
+            
+            <ContentControl Grid.Column="3"
+                            Grid.Row="1"
+                            Content="{Binding CowPanelViewModel}" />
         </Grid>
     </DataTemplate>
 </ResourceDictionary>

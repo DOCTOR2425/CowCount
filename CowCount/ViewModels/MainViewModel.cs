@@ -17,12 +17,14 @@ namespace CowCount.ViewModels
         public MainViewModel(BarnsListViewModel barnsListViewModel,
                              SectionsListViewModel sectionsListViewModel,
                              CowsListViewModel cowsListViewModel,
+                             CowPanelViewModel cowPanelViewModel,
                              ISavedDataService savedDataService,
                              IDialogService dialogService)
         {
             BarnsListViewModel = barnsListViewModel;
             SectionsListViewModel = sectionsListViewModel;
             CowsListViewModel = cowsListViewModel;
+            CowPanelViewModel = cowPanelViewModel;
             _savedDataService = savedDataService;
             _dialogService = dialogService;
 
@@ -40,6 +42,7 @@ namespace CowCount.ViewModels
         public BarnsListViewModel BarnsListViewModel { get; }
         public SectionsListViewModel SectionsListViewModel { get; }
         public CowsListViewModel CowsListViewModel { get; }
+        public CowPanelViewModel CowPanelViewModel { get; }
         public ICommand BarnSelectionChangedCommand { get; set; }
         public ICommand SectionSelectionChangedCommand { get; set; }
         public ICommand CowSelectionChangedCommand { get; set; }
@@ -58,7 +61,10 @@ namespace CowCount.ViewModels
             {
                 _data = await _savedDataService.GetDataAsync(_cancellationTokenSource.Token)
                                                .ConfigureAwait(false);
+
                 BarnsListViewModel.SetBarns(_data.Barns);
+
+                _ = CowPanelViewModel.InitializeAsync(_cancellationTokenSource.Token);
             }
             catch (Exception exception)
             {
@@ -99,77 +105,11 @@ namespace CowCount.ViewModels
             }
         }
 
-        private void DeleteSectionCommandExecute(object? obj)
-        {
-            if (obj is not Section targetSection ||
-                _data.Sections is null)
-            {
-                return;
-            }
-
-            var result = MessageBox.Show(
-                $"Вы уверенны, что хотите удалить секцию \"{targetSection.Number}\" коровника \"{targetSection.BarnNumber}\"?\n" +
-                $"Все коровы секции \"{targetSection.Number}\" коровника \"{targetSection.BarnNumber}\" УДАЛЯТЬСЯ.",
-                "Удаление секции.",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Question);
-
-            if (result == MessageBoxResult.Yes)
-            {
-                _data.Sections.Remove(targetSection);
-                if (_data.Cows is not null)
-                {
-                    _data.Cows.RemoveAll(c =>
-                        c.SectionNumber == targetSection.Number &&
-                        c.BarnNumber == targetSection.BarnNumber);
-                }
-
-                Task.Factory.StartNew(() =>
-                    _savedDataService.UpdateDataAsync(_data, _cancellationTokenSource.Token));
-
-                if (SectionsListViewModel.SelectedSection == targetSection)
-                {
-                    CowsListViewModel.SetCows(null);
-                }
-                SectionsListViewModel.SetSections(
-                    _data.Sections.Where(s => s.BarnNumber == targetSection.BarnNumber).ToList());
-            }
-        }
-
         private void CowSelectionChangedCommandExecute(object? obj)
         {
-
-        }
-
-        private void DeleteCowCommandExecute(object? obj)
-        {
-            if (obj is not Cow targetCow ||
-                _data.Cows is null)
+            if (obj is Cow cow)
             {
-                return;
-            }
-
-            var result = MessageBox.Show(
-                $"Вы уверенны, что хотите удалить корову \"{targetCow.Number}\", " +
-                $"находящуюся в коровнике \"{targetCow.BarnNumber}\", секции \"{targetCow.SectionNumber}\"?\n",
-                "Удаление секции.",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Question);
-
-            if (result == MessageBoxResult.Yes)
-            {
-                _data.Cows.Remove(targetCow);
-
-                Task.Factory.StartNew(() =>
-                    _savedDataService.UpdateDataAsync(_data, _cancellationTokenSource.Token));
-
-                if (SectionsListViewModel.SelectedSection is not null)
-                {
-                    CowsListViewModel.SetCows(
-                        _data.Cows.Where(c =>
-                            c.SectionNumber == SectionsListViewModel.SelectedSection.Number &&
-                            c.BarnNumber == targetCow.BarnNumber).ToList());
-                }
+                CowPanelViewModel.SetCow(cow);
             }
         }
 
@@ -297,7 +237,6 @@ namespace CowCount.ViewModels
                 Number = (int)dialogViewModel.Number,
                 BarnNumber = (int)dialogViewModel.BarnNumber,
                 Group = dialogViewModel.Group,
-                Name = dialogViewModel.Name,
                 SectionNumber = (int)dialogViewModel.Section.Number,
                 Note = dialogViewModel.Note
             };
@@ -368,6 +307,74 @@ namespace CowCount.ViewModels
             }
         }
 
+        private void DeleteSectionCommandExecute(object? obj)
+        {
+            if (obj is not Section targetSection ||
+                _data.Sections is null)
+            {
+                return;
+            }
+
+            var result = MessageBox.Show(
+                $"Вы уверенны, что хотите удалить секцию \"{targetSection.Number}\" коровника \"{targetSection.BarnNumber}\"?\n" +
+                $"Все коровы секции \"{targetSection.Number}\" коровника \"{targetSection.BarnNumber}\" УДАЛЯТЬСЯ.",
+                "Удаление секции.",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                _data.Sections.Remove(targetSection);
+                if (_data.Cows is not null)
+                {
+                    _data.Cows.RemoveAll(c =>
+                        c.SectionNumber == targetSection.Number &&
+                        c.BarnNumber == targetSection.BarnNumber);
+                }
+
+                Task.Factory.StartNew(() =>
+                    _savedDataService.UpdateDataAsync(_data, _cancellationTokenSource.Token));
+
+                if (SectionsListViewModel.SelectedSection == targetSection)
+                {
+                    CowsListViewModel.SetCows(null);
+                }
+                SectionsListViewModel.SetSections(
+                    _data.Sections.Where(s => s.BarnNumber == targetSection.BarnNumber).ToList());
+            }
+        }
+
+        private void DeleteCowCommandExecute(object? obj)
+        {
+            if (obj is not Cow targetCow ||
+                _data.Cows is null)
+            {
+                return;
+            }
+
+            var result = MessageBox.Show(
+                $"Вы уверенны, что хотите удалить корову \"{targetCow.Number}\", " +
+                $"находящуюся в коровнике \"{targetCow.BarnNumber}\", секции \"{targetCow.SectionNumber}\"?\n",
+                "Удаление секции.",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                _data.Cows.Remove(targetCow);
+
+                Task.Factory.StartNew(() =>
+                    _savedDataService.UpdateDataAsync(_data, _cancellationTokenSource.Token));
+
+                if (SectionsListViewModel.SelectedSection is not null)
+                {
+                    CowsListViewModel.SetCows(
+                        _data.Cows.Where(c =>
+                            c.SectionNumber == SectionsListViewModel.SelectedSection.Number &&
+                            c.BarnNumber == targetCow.BarnNumber).ToList());
+                }
+            }
+        }
 
         public void Dispose()
         {

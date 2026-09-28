@@ -55,9 +55,9 @@ namespace CowCount.Services.Implementations
             return _data;
         }
 
-        public async Task UpdateDataAsync(Data config, CancellationToken token)
+        public async Task UpdateDataAsync(Data data, CancellationToken token)
         {
-            _data = config;
+            _data = data;
 
             try
             {
