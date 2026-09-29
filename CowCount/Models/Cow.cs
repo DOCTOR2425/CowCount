@@ -7,20 +7,23 @@
         public int SectionNumber { get; set; }
         public string? Group { get; set; }
         public bool Gender { get; set; }
+        /// <summary>
+        /// Порода
+        /// </summary>
         public string? Breed { get; set; }
         public bool Imported { get; set; }
         public string? Note { get; set; }
         public List<CowAction>? ActionLog { get; set; }
         public DateTime Birthday { get; set; }
-        public DateTime DeathDate { get; set; }
+        public DateTime? DeathDate { get; set; }
         /// <summary>
         /// Дата последнего осеменения
         /// </summary>
-        public DateTime LastInseminationDate { get; set; }
+        public DateTime? LastInseminationDate { get; set; }
         /// <summary>
         /// Дата последнего отёла
         /// </summary>
-        public DateTime LastCalvingDate { get; set; }
+        public DateTime? LastCalvingDate { get; set; }
         /// <summary>
         /// Кличка донора семени для отёла
         /// </summary>

@@ -107,7 +107,8 @@ namespace CowCount.ViewModels
 
         private void CowSelectionChangedCommandExecute(object? obj)
         {
-            if (obj is Cow cow)
+            if (obj is Cow cow &&
+                _data is not null)
             {
                 CowPanelViewModel.SetCow(cow);
             }

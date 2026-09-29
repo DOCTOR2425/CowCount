@@ -2,16 +2,55 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:viewModels="clr-namespace:CowCount.ViewModels">
     <DataTemplate DataType="{x:Type viewModels:CowPanelViewModel}">
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <StackPanel Margin="10">
+        <DataTemplate.Resources>
+            <Style x:Key="CopyableTextBoxStyle" TargetType="TextBox">
+                <Setter Property="IsReadOnly" Value="False"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsCowInChangeState}" Value="False">
+                        <Setter Property="IsReadOnly" Value="True"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </DataTemplate.Resources>
 
-                <TextBlock Text="Идентификация" 
-                       FontWeight="Bold" 
-                       Margin="0,0,0,5"/>
+        <ScrollViewer x:Name="CowPanel"
+                      VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="10,5">
 
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    
+                    <Button Grid.Column="0"
+                            Content="Перевести в ..."
+                            Command="{Binding MoveCowCommand}"/>
+
+                    <StackPanel Grid.Column="2"
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Right">
+                        <Button x:Name="ChangeCowButton"
+                                Content="Изменить"
+                                Command="{Binding ChangeCowCommand}"/>
+                        <Button x:Name="SaveChangesCowButton"
+                                Content="Сохранить изменения"
+                                Command="{Binding SaveChangesCowCommand}"
+                                Margin="0 0 10 0"/>
+                        <Button x:Name="CancelChangesCowButton"
+                                Content="Отменить изменения"
+                                Command="{Binding CancelChangesCowCommand}"/>
+                    </StackPanel>
+                </Grid>
+
+                <TextBlock Text="Идентификация" 
+                           FontWeight="Bold" 
+                           Margin="0,10,0,5"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="140"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -22,52 +61,69 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0" Grid.Column="0" 
-                           Text="Номер:" 
-                           VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="0"
+                               Grid.Column="0"
+                               Text="Номер:"
+                               VerticalAlignment="Center"/>
                     <TextBox   Grid.Row="0" Grid.Column="1" 
-                           Text="{Binding Cow.Number, UpdateSourceTrigger=PropertyChanged}"
-                           Margin="0,2"/>
+                               Style="{StaticResource CopyableTextBoxStyle}"
+                               Text="{Binding ChangedCow.Number}"
+                               Margin="0,2"/>
 
-                    <TextBlock Grid.Row="1" Grid.Column="0" 
-                           Text="Пол:" 
-                           VerticalAlignment="Center"/>
-                    <ComboBox  Grid.Row="1" Grid.Column="1" 
-                           SelectedIndex="{Binding Cow.Gender}"
-                           Margin="0,2">
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="0"
+                               Text="Пол:"
+                               VerticalAlignment="Center"/>
+                    <ComboBox  Grid.Row="1"
+                               Grid.Column="1" 
+                               IsEnabled="{Binding IsCowInChangeState}"
+                               SelectedIndex="{Binding ChangedCow.Gender}"
+                               Margin="0,2">
                         <ComboBoxItem Content="Корова"/>
                         <ComboBoxItem Content="Бык"/>
                     </ComboBox>
 
-                    <TextBlock Grid.Row="2" Grid.Column="0" 
-                           Text="Порода:" 
-                           VerticalAlignment="Center"/>
-                    <TextBox   Grid.Row="2" Grid.Column="1" 
-                           Text="{Binding Cow.Breed, UpdateSourceTrigger=PropertyChanged}"
-                           Margin="0,2"/>
+                    <TextBlock Grid.Row="2"
+                               Grid.Column="0"
+                               Text="Порода:"
+                               VerticalAlignment="Center"/>
+                    <TextBox   Grid.Row="2"
+                               Grid.Column="1" 
+                               Style="{StaticResource CopyableTextBoxStyle}"
+                               Text="{Binding ChangedCow.Breed}"
+                               Margin="0,2"/>
 
-                    <TextBlock Grid.Row="3" Grid.Column="0" 
-                           Text="Группа:" 
-                           VerticalAlignment="Center"/>
-                    <TextBox   Grid.Row="3" Grid.Column="1" 
-                           Text="{Binding Cow.Group, UpdateSourceTrigger=PropertyChanged}"
-                           Margin="0,2"/>
+                    <TextBlock Grid.Row="3"
+                               Grid.Column="0"
+                               Text="Группа:"
+                               VerticalAlignment="Center"/>
+                    <!--<TextBox   Grid.Row="3"
+                               Grid.Column="1" 
+                               Style="{StaticResource CopyableTextBoxStyle}"
+                               Text="{Binding ChangedCow.Group}"
+                               Margin="0,2"/>-->
+                    <ComboBox Grid.Row="3"
+                              Grid.Column="1" 
+                              IsEnabled="{Binding IsCowInChangeState}"
+                              ItemsSource="{Binding Groups}"
+                              SelectedItem="{Binding ChangedCow.Group}"
+                              Margin="0,2"/>
 
                     <CheckBox  Grid.Row="4" Grid.Column="1" 
-                           Content="Импортная"
-                           IsChecked="{Binding Cow.Imported}"
-                           Margin="0,5"/>
+                               IsEnabled="{Binding IsCowInChangeState}"
+                               Content="Импортная"
+                               IsChecked="{Binding ChangedCow.Imported}"
+                               Margin="0,5"/>
                 </Grid>
 
                 <Separator Margin="0,10"/>
-
-                <TextBlock Text="Расположение" 
-                       FontWeight="Bold" 
-                       Margin="0,0,0,5"/>
+                <TextBlock Text="Расположение"
+                           FontWeight="Bold"
+                           Margin="0,0,0,5"/>
 
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="140"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -75,34 +131,36 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0" Grid.Column="0" 
-                           Text="Коровник:" 
-                           VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="0"
+                               Grid.Column="0"
+                               Text="Коровник:"
+                               VerticalAlignment="Center"/>
                     <TextBox   Grid.Row="0" Grid.Column="1" 
-                           Text="{Binding Cow.BarnNumber}"
-                           IsReadOnly="True"
-                           Background="#F0F0F0"
-                           Margin="0,2"/>
+                               Text="{Binding ChangedCow.BarnNumber}"
+                               IsReadOnly="True"
+                               Background="#F0F0F0"
+                               Margin="0,2"/>
 
-                    <TextBlock Grid.Row="1" Grid.Column="0" 
-                           Text="Секция:" 
-                           VerticalAlignment="Center"/>
-                    <TextBox   Grid.Row="1" Grid.Column="1" 
-                           Text="{Binding Cow.SectionNumber}"
-                           IsReadOnly="True"
-                           Background="#F0F0F0"
-                           Margin="0,2"/>
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="0"
+                               Text="Секция:"
+                               VerticalAlignment="Center"/>
+                    <TextBox   Grid.Row="1"
+                               Grid.Column="1" 
+                               Text="{Binding ChangedCow.SectionNumber}"
+                               IsReadOnly="True"
+                               Background="#F0F0F0"
+                               Margin="0,2"/>
                 </Grid>
 
                 <Separator Margin="0,10"/>
-
-                <TextBlock Text="Даты" 
-                       FontWeight="Bold" 
-                       Margin="0,0,0,5"/>
+                <TextBlock Text="Даты"
+                           FontWeight="Bold"
+                           Margin="0,0,0,5"/>
 
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="140"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -112,67 +170,96 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0" Grid.Column="0" 
-                           Text="Дата рождения:" 
-                           VerticalAlignment="Center"/>
-                    <DatePicker Grid.Row="0" Grid.Column="1" 
-                            SelectedDate="{Binding Cow.Birthday}"
-                            Margin="0,2"/>
+                    <TextBlock Grid.Row="0"
+                               Grid.Column="0"
+                               Text="Дата рождения:"
+                               VerticalAlignment="Center"/>
+                    <DatePicker Grid.Row="0"
+                                Grid.Column="1" 
+                                IsEnabled="{Binding IsCowInChangeState}"
+                                SelectedDate="{Binding ChangedCow.Birthday}"
+                                Margin="0,2"/>
 
-                    <TextBlock Grid.Row="1" Grid.Column="0" 
-                           Text="Дата смерти:" 
-                           VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="0"
+                               Text="Дата смерти:"
+                               VerticalAlignment="Center"/>
                     <DatePicker Grid.Row="1" Grid.Column="1" 
-                            SelectedDate="{Binding Cow.DeathDate}"
-                            Margin="0,2"/>
+                                IsEnabled="{Binding IsCowInChangeState}"
+                                SelectedDate="{Binding ChangedCow.DeathDate}"
+                                Margin="0,2"/>
 
-                    <TextBlock Grid.Row="2" Grid.Column="0" 
-                           Text="Осеменение:" 
-                           VerticalAlignment="Center"/>
-                    <DatePicker Grid.Row="2" Grid.Column="1" 
-                            SelectedDate="{Binding Cow.LastInseminationDate}"
-                            Margin="0,2"/>
+                    <TextBlock Grid.Row="2"
+                               Grid.Column="0"
+                               Text="Последнее осеменение:"
+                               VerticalAlignment="Center"/>
+                    <DatePicker Grid.Row="2"
+                                Grid.Column="1" 
+                                IsEnabled="{Binding IsCowInChangeState}"
+                                SelectedDate="{Binding ChangedCow.LastInseminationDate}"
+                                Margin="0,2"/>
 
-                    <TextBlock Grid.Row="3" Grid.Column="0" 
-                           Text="Отёл:" 
-                           VerticalAlignment="Center"/>
-                    <DatePicker Grid.Row="3" Grid.Column="1" 
-                            SelectedDate="{Binding Cow.LastCalvingDate}"
-                            Margin="0,2"/>
+                    <TextBlock Grid.Row="3"
+                               Grid.Column="0"
+                               Text="Последний отёл:"
+                               VerticalAlignment="Center"/>
+                    <DatePicker Grid.Row="3"
+                                Grid.Column="1" 
+                                IsEnabled="{Binding IsCowInChangeState}"
+                                SelectedDate="{Binding ChangedCow.LastCalvingDate}"
+                                Margin="0,2"/>
                 </Grid>
 
                 <Separator Margin="0,10"/>
-
-                <TextBlock Text="Разведение" 
-                       FontWeight="Bold" 
-                       Margin="0,0,0,5"/>
+                <TextBlock Text="Разведение"
+                           FontWeight="Bold"
+                           Margin="0,0,0,5"/>
 
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="140"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Column="0" 
-                           Text="Бык-производитель:" 
-                           VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="0"
+                               Text="Бык-осеменитель:"
+                               VerticalAlignment="Center"/>
                     <TextBox   Grid.Column="1" 
-                           Text="{Binding Cow.SpermDonorNickname, UpdateSourceTrigger=PropertyChanged}"
-                           Margin="0,2"/>
+                               Style="{StaticResource CopyableTextBoxStyle}"
+                               Text="{Binding ChangedCow.SpermDonorNickname}"
+                               Margin="0,2"/>
                 </Grid>
 
                 <Separator Margin="0,10"/>
+                <TextBlock Text="Заметки"
+                           FontWeight="Bold"
+                           Margin="0,0,0,5"/>
 
-                <TextBlock Text="Заметки" 
-                       FontWeight="Bold" 
-                       Margin="0,0,0,5"/>
-                <TextBox Text="{Binding Cow.Note, UpdateSourceTrigger=PropertyChanged}"
-                     AcceptsReturn="True"
-                     TextWrapping="Wrap"
-                     MinHeight="60"
-                     VerticalScrollBarVisibility="Auto"/>
+                <TextBox Style="{StaticResource CopyableTextBoxStyle}"
+                         Text="{Binding ChangedCow.Note}"
+                         AcceptsReturn="True"
+                         TextWrapping="Wrap"
+                         MinHeight="60"
+                         VerticalScrollBarVisibility="Auto"/>
 
             </StackPanel>
         </ScrollViewer>
+
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding IsCowInChangeState}" Value="True">
+                <Setter TargetName="SaveChangesCowButton" Property="Visibility" Value="Visible"/>
+                <Setter TargetName="CancelChangesCowButton" Property="Visibility" Value="Visible"/>
+                <Setter TargetName="ChangeCowButton" Property="Visibility" Value="Collapsed"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsCowInChangeState}" Value="False">
+                <Setter TargetName="SaveChangesCowButton" Property="Visibility" Value="Collapsed"/>
+                <Setter TargetName="CancelChangesCowButton" Property="Visibility" Value="Collapsed"/>
+                <Setter TargetName="ChangeCowButton" Property="Visibility" Value="Visible"/>
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding Cow}" Value="{x:Null}">
+                <Setter TargetName="CowPanel" Property="Visibility" Value="Collapsed"/>
+            </DataTrigger>
+        </DataTemplate.Triggers>
     </DataTemplate>
 </ResourceDictionary>

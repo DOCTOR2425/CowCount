@@ -6,6 +6,7 @@
         <ResourceDictionary Source="AddSectionDialogWindowTemplate.xaml" />
         <ResourceDictionary Source="AddCowDialogWindowTemplate.xaml" />
         <ResourceDictionary Source="AddGroupDialogWindowTemplate.xaml" />
+        <ResourceDictionary Source="MoveCowsDialogWindowTemplate.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <DataTemplate DataType="{x:Type viewModels:DialogViewModel}">

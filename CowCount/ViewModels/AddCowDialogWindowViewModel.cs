@@ -40,8 +40,7 @@ namespace CowCount.ViewModels
 
             if (existingGroups is not null)
             {
-                ExistingGroups = new(existingGroups);
-                ExistingGroups.Add(string.Empty);
+                ExistingGroups = [.. existingGroups, string.Empty];
             }
 
             if (defaultValue is not null)
