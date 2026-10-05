@@ -4,23 +4,9 @@ namespace CowCount.ViewModels
 {
     public class CowsListViewModel : ViewModelBase
     {
-        private ObservableCollectionEx<Cow>? _cows;
         private Cow? _selectedCow;
 
-        public ObservableCollectionEx<Cow>? Cows
-        {
-            get => _cows;
-            set
-            {
-                if (value == _cows)
-                {
-                    return;
-                }
-
-                _cows = value;
-                OnPropertyChanged();
-            }
-        }
+        public ObservableCollectionEx<Cow> Cows { get; } = new();
 
         public Cow? SelectedCow
         {
@@ -41,10 +27,10 @@ namespace CowCount.ViewModels
         {
             if (cows is null)
             {
-                Cows = null;
+                Cows.Clear();
                 return;
             }
-            Cows = new ObservableCollectionEx<Cow>(cows);
+            Cows.ReplaceRange(cows);
         }
     }
 }

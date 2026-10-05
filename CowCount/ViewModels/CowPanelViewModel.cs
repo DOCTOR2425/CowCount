@@ -28,13 +28,11 @@ namespace CowCount.ViewModels
             ChangeCowCommand = new RelayCommand(ChangeCowCommandExecute);
             SaveChangesCowCommand = new RelayCommand(SaveChangesCowCommandExecute);
             CancelChangesCowCommand = new RelayCommand(CancelChangesCowCommandExecute);
-            MoveCowCommand = new RelayCommand(MoveCowCommandExecute);
         }
 
         public ICommand ChangeCowCommand { get; set; }
         public ICommand CancelChangesCowCommand { get; set; }
         public ICommand SaveChangesCowCommand { get; set; }
-        public ICommand MoveCowCommand { get; set; }
 
         public Cow? Cow
         {
@@ -186,27 +184,6 @@ namespace CowCount.ViewModels
         {
             SetCow(Cow);
             IsCowInChangeState = false;
-        }
-
-        private void MoveCowCommandExecute(object? obj)
-        {
-            if(Cow is null)
-            {
-                return;
-            }
-
-            var dialogViewModel = new MoveCowsDialogWindowViewModel(
-                new List<Cow>() { Cow },
-                _data.Barns,
-                _data.Sections);
-
-            var dialogResult = _dialogService.ShowDialog(dialogViewModel);
-
-            if (dialogResult is null or false)
-            {
-                return;
-            }
-
         }
     }
 }

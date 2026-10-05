@@ -23,10 +23,6 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    
-                    <Button Grid.Column="0"
-                            Content="Перевести в ..."
-                            Command="{Binding MoveCowCommand}"/>
 
                     <StackPanel Grid.Column="2"
                                 Orientation="Horizontal"

@@ -4,23 +4,9 @@ namespace CowCount.ViewModels
 {
     public class SectionsListViewModel : ViewModelBase
     {
-        private ObservableCollectionEx<Section>? _sections;
         private Section? _selectedSection;
 
-        public ObservableCollectionEx<Section>? Sections
-        {
-            get => _sections;
-            set
-            {
-                if (value == _sections)
-                {
-                    return;
-                }
-
-                _sections = value;
-                OnPropertyChanged();
-            }
-        }
+        public ObservableCollectionEx<Section> Sections { get; } = new();
 
         public Section? SelectedSection
         {
@@ -41,10 +27,10 @@ namespace CowCount.ViewModels
         {
             if (sections is null)
             {
-                Sections = null;
+                Sections.Clear();
                 return;
             }
-            Sections = new ObservableCollectionEx<Section>(sections);
+            Sections.ReplaceRange(sections);
         }
     }
 }

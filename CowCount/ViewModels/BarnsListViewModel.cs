@@ -2,23 +2,9 @@
 {
     public class BarnsListViewModel : ViewModelBase
     {
-        private ObservableCollectionEx<int>? _barns;
         private int? _selectedBarn;
 
-        public ObservableCollectionEx<int>? Barns
-        {
-            get => _barns;
-            set
-            {
-                if (value == _barns)
-                {
-                    return;
-                }
-
-                _barns = value;
-                OnPropertyChanged();
-            }
-        }
+        public ObservableCollectionEx<int> Barns { get; } = new();
 
         public int? SelectedBarn
         {
@@ -39,10 +25,10 @@
         {
             if (barns is null)
             {
-                Barns = null;
+                Barns.Clear();
                 return;
             }
-            Barns = new ObservableCollectionEx<int>(barns);
+            Barns.ReplaceRange(barns);
         }
     }
 }

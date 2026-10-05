@@ -5,14 +5,17 @@
         private readonly CancellationTokenSource _mainCancellationTokenSource = new();
 
         public TabsViewModel(MainViewModel mainViewModel,
-                             GroupsViewModel groupsViewModel)
+                             GroupsViewModel groupsViewModel,
+                             MoveCowsViewModel moveCowsViewModel)
         {
             MainViewModel = mainViewModel;
             GroupsViewModel = groupsViewModel;
+            MoveCowsViewModel = moveCowsViewModel;
         }
 
         public MainViewModel MainViewModel { get; }
         public GroupsViewModel GroupsViewModel { get; }
+        public MoveCowsViewModel MoveCowsViewModel { get; }
 
         public int SelectedTabIndex { get; set; }
 
@@ -20,6 +23,7 @@
         {
             await MainViewModel.InitializeAsync(_mainCancellationTokenSource.Token);
             await GroupsViewModel.InitializeAsync(_mainCancellationTokenSource.Token);
+            await MoveCowsViewModel.InitializeAsync(_mainCancellationTokenSource.Token);
         }
 
         public void Dispose()

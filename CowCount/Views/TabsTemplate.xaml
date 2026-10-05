@@ -4,6 +4,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="MainViewModelTemplate.xaml" />
         <ResourceDictionary Source="GroupsTemplate.xaml" />
+        <ResourceDictionary Source="MoveCowsTemplate.xaml" />
     </ResourceDictionary.MergedDictionaries>
     
     <DataTemplate DataType="{x:Type viewModels:TabsViewModel}">
@@ -14,6 +15,10 @@
 
             <TabItem Header="Группы">
                 <ContentControl Content="{Binding GroupsViewModel}" />
+            </TabItem>
+            
+            <TabItem Header="Перемещение">
+                <ContentControl Content="{Binding MoveCowsViewModel}" />
             </TabItem>
         </TabControl>
     </DataTemplate>

@@ -29,6 +29,7 @@ namespace CowCount
             builder.RegisterType<TabsViewModel>().AsSelf();
             builder.RegisterType<MainViewModel>().AsSelf();
             builder.RegisterType<GroupsViewModel>().AsSelf();
+            builder.RegisterType<MoveCowsViewModel>().AsSelf();
             builder.RegisterType<BarnsListViewModel>().AsSelf();
             builder.RegisterType<SectionsListViewModel>().AsSelf();
             builder.RegisterType<CowsListViewModel>().AsSelf();
