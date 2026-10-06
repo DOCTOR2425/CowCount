@@ -1,7 +1,7 @@
 ﻿using CowCount.Commands;
 using CowCount.Models;
 using CowCount.Services.Interfaces;
-using System.Collections.Frozen;
+using System.Windows;
 using System.Windows.Input;
 
 namespace CowCount.ViewModels
@@ -16,6 +16,7 @@ namespace CowCount.ViewModels
         private Cow? _selectedRightCow;
         private int? _selectedBarn;
         private Section? _selectedSection;
+        private bool _isSelected;
 
         public MoveCowsViewModel(ISavedDataService savedDataService)
         {
@@ -29,6 +30,7 @@ namespace CowCount.ViewModels
             MoveAllCowsRightCommand = new RelayCommand(MoveAllCowsRightCommandExecute);
             MoveAllCowsLeftCommand = new RelayCommand(MoveAllCowsLeftCommandExecute);
             MoveSelectedCowsCommand = new RelayCommand(MoveSelectedCowsCommandExecute);
+            ActivatedCommand = new RelayCommand(ActivatedCommandExecute);
         }
 
         public ICommand SourceBarnSelectionChangedCommand { get; }
@@ -39,6 +41,7 @@ namespace CowCount.ViewModels
         public ICommand MoveAllCowsLeftCommand { get; }
         public ICommand MoveAllCowsRightCommand { get; }
         public ICommand MoveSelectedCowsCommand { get; }
+        public ICommand ActivatedCommand { get; }
 
         public ObservableCollectionEx<int> SourceBarns { get; } = new();
         public ObservableCollectionEx<Section> SourceSections { get; } = new();
@@ -107,6 +110,21 @@ namespace CowCount.ViewModels
             }
         }
 
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set
+            {
+                if (value == _isSelected)
+                {
+                    return;
+                }
+
+                _isSelected = value;
+                OnPropertyChanged();
+            }
+        }
+
         public async Task InitializeAsync(CancellationToken parentToken)
         {
             _cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(parentToken);
@@ -135,6 +153,8 @@ namespace CowCount.ViewModels
                     .ReplaceRange(_data.Sections
                         .Where(s => s.BarnNumber == banrNumber)
                         .ToList());
+
+                SourceCows.Clear();
             }
         }
 
@@ -227,6 +247,11 @@ namespace CowCount.ViewModels
             }
 
             _ = _savedDataService.UpdateDataAsync(_data, _cancellationTokenSource.Token);
+        }
+
+        private void ActivatedCommandExecute(object? obj)
+        {
+            MessageBox.Show("Move");
         }
     }
 }
