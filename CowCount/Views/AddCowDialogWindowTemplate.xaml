@@ -5,9 +5,9 @@
                     xmlns:local="clr-namespace:CowCount.AttachedProperty">
     <DataTemplate x:Key="SectionItemTemplate" DataType="{x:Type viewModels:SectionViewModel}">
         <StackPanel>
-            <Label Content="{Binding Number}"
+            <TextBlock Text="{Binding Number}"
                Padding="0"/>
-            <Label Content="{Binding Group}"
+            <TextBlock Text="{Binding Group}"
                Padding="0"
                Foreground="DarkGray"/>
         </StackPanel>
@@ -27,18 +27,18 @@
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0">
-                <Label Content="Введите номер коровы"/>
+                <TextBlock Text="Введите номер коровы"/>
                 <TextBox Text="{Binding Number}"
                          local:NumericInputProperty.IsNumeric="True"/>
             </StackPanel>
 
             <StackPanel Grid.Row="1">
-                <Label Content="Выберите имя коровы"/>
+                <TextBlock Text="Выберите имя коровы"/>
                 <TextBox Text="{Binding Name}"/>
             </StackPanel>
 
             <StackPanel Grid.Row="2">
-                <Label Content="Выберите коровник"/>
+                <TextBlock Text="Выберите коровник"/>
                 <ComboBox ItemsSource="{Binding ExistingBarns}"
                           SelectedItem="{Binding BarnNumber}">
                     <i:Interaction.Triggers>
@@ -51,20 +51,20 @@
             </StackPanel>
 
             <StackPanel Grid.Row="3">
-                <Label Content="Выберите секцию"/>
+                <TextBlock Text="Выберите секцию"/>
                 <ComboBox ItemsSource="{Binding SectionsInBarn}"
                           SelectedItem="{Binding Section}"
                           ItemTemplate="{StaticResource SectionItemTemplate}"/>
             </StackPanel>
 
             <StackPanel Grid.Row="4">
-                <Label Content="Выберите группу"/>
+                <TextBlock Text="Выберите группу"/>
                 <ComboBox ItemsSource="{Binding ExistingGroups}"
                           SelectedItem="{Binding Group}"/>
             </StackPanel>
 
             <StackPanel Grid.Row="5">
-                <Label Content="Введите заметку"/>
+                <TextBlock Text="Введите заметку"/>
                 <TextBox Text="{Binding Note}"/>
             </StackPanel>
         </Grid>

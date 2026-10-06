@@ -8,7 +8,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <Label Content="Введите номер коровника"
+            <TextBlock Text="Введите номер коровника"
                    Grid.Row="0"/>
             <TextBox Text="{Binding BarnNumber}"
                      Grid.Row="1"

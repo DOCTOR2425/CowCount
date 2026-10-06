@@ -11,7 +11,7 @@
                     Command="{Binding DataContext.MainViewModel.DeleteBarnCommand, 
                               RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
                     CommandParameter="{Binding Content, RelativeSource={RelativeSource AncestorType=ListViewItem}}" />
-            <Label Content="{Binding}"/>
+            <TextBlock Text="{Binding}"/>
         </DockPanel>
         
         <DataTemplate.Triggers>
@@ -32,8 +32,8 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <Label Grid.Row="0"
-                       Content="Коровники"/>
+                <TextBlock Grid.Row="0"
+                           Text="Коровники"/>
 
                 <Button Grid.Row="1"
                         Content="Добавить коровник"

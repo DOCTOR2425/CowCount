@@ -11,19 +11,19 @@
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0">
-                <Label Content="Введите номер секции"/>
+                <TextBlock Text="Введите номер секции"/>
                 <TextBox Text="{Binding Number}"
                     local:NumericInputProperty.IsNumeric="True"/>
             </StackPanel>
 
             <StackPanel Grid.Row="1">
-                <Label Content="Выберите номер коровника"/>
+                <TextBlock Text="Выберите номер коровника"/>
                 <ComboBox ItemsSource="{Binding ExistingBarns}"
                           SelectedItem="{Binding BarnNumber}"/>
             </StackPanel>
 
             <StackPanel Grid.Row="2">
-                <Label Content="Выберите группу"/>
+                <TextBlock Text="Выберите группу"/>
                 <ComboBox ItemsSource="{Binding ExistingGroups}"
                           SelectedItem="{Binding Group}"/>
             </StackPanel>

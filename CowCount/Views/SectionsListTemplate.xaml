@@ -12,9 +12,9 @@
                               RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
                     CommandParameter="{Binding Content, RelativeSource={RelativeSource AncestorType=ListViewItem}}" />
             <StackPanel>
-                <Label Content="{Binding Number}"
+                <TextBlock Text="{Binding Number}"
                    Padding="0"/>
-                <Label Content="{Binding Group, TargetNullValue=''}"
+                <TextBlock Text="{Binding Group, TargetNullValue=''}"
                    Padding="0"
                    Foreground="DarkGray"/>
             </StackPanel>
@@ -38,8 +38,8 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <Label Grid.Row="0"
-                       Content="Секции"/>
+                <TextBlock Grid.Row="0"
+                       Text="Секции"/>
 
                 <Button Grid.Row="1"
                         Content="Добавить секцию в коровник"

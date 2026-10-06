@@ -3,7 +3,7 @@
                     xmlns:viewModels="clr-namespace:CowCount.ViewModels">
     <DataTemplate DataType="{x:Type viewModels:AddGroupDialogWindowViewModel}">
         <StackPanel>
-            <Label Content="Введите название группы"
+            <TextBlock Text="Введите название группы"
                    Padding="0"/>
             <TextBox Padding="0"
                      Text="{Binding GroupName}"/>
